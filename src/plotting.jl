@@ -40,7 +40,7 @@ function plot_parc!(connectome::Connectome, hemisphere::Symbol; alpha=1.0)
 
     colors = distinguishable_colors(length(h_ids))
     for (i, j) in enumerate(h_ids)
-        roi = load(meshpath * "DKT/roi_$(j).obj")
+        roi = load(meshpath * "meshes/DKT/roi_$(j).obj")
         mesh!(roi, color=(colors[i], alpha), transparency=false)
     end
 end
@@ -59,8 +59,8 @@ function plot_parc(connectome::Connectome; alpha=1.0)
 end
 
 function plot_roi!(roi::Int, color=(:grey,1.0); transparency=false)
-    meshpath = joinpath(meshpath, "meshes/DKT/roi_$(roi).obj")
-    mesh!(load(meshpath), color=color, transparency=transparency)
+    roi = joinpath(meshpath, "meshes/DKT/roi_$(roi).obj")
+    mesh!(load(roi), color=color, transparency=transparency)
 end
 
 function plot_roi!(roi::Vector{Int64}, color; transparency=false)
