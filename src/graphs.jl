@@ -64,13 +64,15 @@ struct Connectome
     graph::SimpleWeightedGraph{Int64, Float64}
     n_matrix::Matrix{Float64}
     l_matrix::Matrix{Float64}
+    weight_function::Function
 end
 
-function Connectome(graph_path::String; norm=true)
+function Connectome(graph_path::String; norm=true, weight_function::Function = (n, l) -> n)
     parc, n_matrix, l_matrix = load_graphml(graph_path)
     sym_n = symmetrise(n_matrix)
     sym_l = symmetrise(l_matrix)
-    A = replace(sym_n ./ (sym_l).^2, NaN=>0)
+    weighted_graph = weight_function(sym_n, sym_l)
+    A = replace(weighted_graph, NaN=>0)
 
     #Graph = SimpleWeightedGraph(symmetrise(n_matrix ./ (l_matrix)^2))
     if norm
@@ -78,29 +80,16 @@ function Connectome(graph_path::String; norm=true)
     else
         Graph = SimpleWeightedGraph(A)
     end
-    return Connectome(parc, Graph, n_matrix, l_matrix)
+    return Connectome(parc, Graph, n_matrix, l_matrix, weight_function)
 end
-
-function cmtkConnectome(graph_path::String; norm=true)
-    parc, n_matrix, l_matrix = cmtk_load_graphml(graph_path)
-    sym_n = symmetrise(n_matrix)
-    sym_l = symmetrise(l_matrix)
-    Graph = SimpleWeightedGraph(replace(sym_n ./ (sym_l).^2, NaN=>0))
-
-    if norm
-        Graph = adjacency_matrix(Graph) |> max_norm |> SimpleWeightedGraph
-    end
-    Connectome(parc, Graph, n_matrix, l_matrix)
-end
-
 
 function Connectome(parc::DataFrame, c::Connectome)
-    Connectome(parc, c.graph, c.n_matrix, c.l_matrix)
+    Connectome(parc, c.graph, c.n_matrix, c.l_matrix, c.weight_function)
 end
 
-function Connectome(A::SparseMatrixCSC{Float64, Int64}, c::Connectome)
+function Connectome(A::AbstractMatrix, c::Connectome)
     G = SimpleWeightedGraph(A)
-    Connectome(c.parc, G, c.n_matrix, c.l_matrix)
+    Connectome(c.parc, G, c.n_matrix, c.l_matrix, c.weight_function)
 end
 
 function Base.show(io::IO, c::Connectome)
@@ -139,11 +128,21 @@ end
 function slice(c::Connectome, rois::DataFrame; norm=true)
     N = c.n_matrix[rois.ID, rois.ID]
     L = c.l_matrix[rois.ID, rois.ID]
-    A = replace(( N ./ L.^2), NaN => 0)
+    weighted_graph = c.weight_function(N, L)
+    A = replace(weighted_graph, NaN => 0)
     if norm
         G = A |> max_norm |> SimpleWeightedGraph
     else
         G = SimpleWeightedGraph(A)
     end
-    Connectome(rois, G, N, L)
+    Connectome(rois, G, N, L, c.weight_function)
+end
+
+function reweight(c::Connectome; norm=true, weight_function::Function)
+    weighted_graph = weight_function(c.n_matrix, c.l_matrix)
+    A = replace(weighted_graph, NaN => 0)
+    if norm
+        A = max_norm(A)
+    end
+    Connectome(A, c)
 end

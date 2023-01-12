@@ -6,9 +6,7 @@ using LinearAlgebra
 using FileIO
 
 @testset "Connectomes.jl" begin
-    connectome_path = "/"*relpath((@__FILE__)*"/../..","/") * "/assets/connectomes/Connectomes-hcp-scale1.xml"
-
-    connectome = Connectome(connectome_path)
+    connectome = Connectome(Connectomes.connectome_path())
 
     @test connectome isa Connectome
     @test adjacency_matrix(connectome) isa SparseMatrixCSC{Float64, Int64}
@@ -42,4 +40,18 @@ using FileIO
     @test maximum(A3) == 1.0
     @test cortex_c.n_matrix == connectome.n_matrix[cortex.ID, cortex.ID]
     @test cortex_c.l_matrix == connectome.l_matrix[cortex.ID, cortex.ID]
+
+    N = connectome.n_matrix
+    L = connectome.l_matrix
+    diffusive_weights = replace(N ./ L.^2, NaN => 0) |> Connectomes.max_norm
+
+    weighted_connectome = Connectome(Connectomes.connectome_path(); 
+                                     weight_function = (n, l) -> n ./ l.^2)
+
+    weighted_connectome_A = adjacency_matrix(weighted_connectome) |> Array
+
+    reweighted_connectome = reweight(connectome; norm=true, weight_function = (n, l) -> n ./ l.^2)
+    reweighted_connectome_A = adjacency_matrix(reweighted_connectome) |> Array
+
+    @test diffusive_weights == weighted_connectome_A == reweighted_connectome_A
 end

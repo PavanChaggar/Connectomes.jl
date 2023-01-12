@@ -32,6 +32,7 @@ export degree_matrix
 export laplacian_matrix
 export get_edge_weight
 export slice
+export reweight
 
 include("graphml.jl")
 export save_connectome
