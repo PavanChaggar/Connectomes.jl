@@ -1,9 +1,3 @@
-using LightXML
-using Connectomes
-using DataFrames
-using CSV
-using Test
-
 @testset "xml" begin
     test = Connectome(Connectomes.connectome_path())
 
