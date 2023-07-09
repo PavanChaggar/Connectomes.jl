@@ -142,7 +142,9 @@ function reweight(c::Connectome; norm=true, weight_function::Function)
     weighted_graph = weight_function(c.n_matrix, c.l_matrix)
     A = replace(weighted_graph, NaN => 0)
     if norm
-        A = max_norm(A)
+        G = A |> max_norm |> SimpleWeightedGraph
+    else
+        G = SimpleWeightedGraph(A)
     end
-    Connectome(A, c)
+    Connectome(c.parc, G, c.n_matrix, c.l_matrix, weight_function)
 end
