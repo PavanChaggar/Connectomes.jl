@@ -19,6 +19,9 @@ import Graphs: degree
 import SimpleWeightedGraphs: adjacency_matrix, degree_matrix, laplacian_matrix
 
 
+include("parcellation.jl")
+export Parcellation, Region
+
 include("graphs.jl")
 export Connectome
 export graph_filter

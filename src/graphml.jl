@@ -28,7 +28,9 @@ function get_node_attributes(graph)
         end
     end
     x, y, z = coords[:,1], coords[:,2], coords[:,3]
-    return DataFrame(ID=nID, Label=labels, Region=region, Hemisphere=hemisphere, x=x, y=y, z=z, Lobe=lobe)
+    # return DataFrame(ID=nID, Label=labels, Region=region, Hemisphere=hemisphere, x=x, y=y, z=z, Lobe=lobe)
+    return nID, labels, region, lobe, hemisphere, x, y, z
+
 end
 
 function get_adjacency_matrix(graph)
@@ -64,7 +66,13 @@ function load_graphml(graph_path::String)
     return node_attributes, N, L
 end
 
-
+function load_parcellation(graph_path::String)
+    xdoc = parse_file(graph_path)
+    xroot = root(xdoc)
+    ces = collect(child_elements(xroot))
+    
+    get_node_attributes(ces[end])
+end
 
 for_dict = Dict(1 => "node", 
                 2 => "node",
