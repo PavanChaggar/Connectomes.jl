@@ -69,59 +69,8 @@ function plot_roi!(roi::Vector{Int64}, color; transparency=false)
     end
 end
 
-function plot_roi(connectome::Connectome, roi::String; cortexcolor=(:grey,0.05), color=(:blue,0.1), transparency=true)
-
-    f  = set_fig()
-    plot_cortex!(:all; color=cortexcolor, transparency=transparency)
-    
-    ID = get_roi(connectome.parc, roi)
-    
-    for i in ID
-        plot_roi!(i, color)
-    end
-    f
-end
-
-function plot_roi(connectome::Connectome, roi::String, hemisphere::Symbol; cortexcolor=(:grey,0.05), color=(:blue, 0.1), roi_alpha=1.0, transparency=true)
-
-    f, _ = set_fig()
-    plot_cortex!(hemisphere; color=cortexcolor, transparency=transparency)
-    plot_cortex!   
-    ID = get_roi(connectome.parc, roi)
-    h_ID = get_hemisphere(connectome.parc[ID,:], hemisphere)
-    for j in h_ID
-        plot_roi!(j, color)
-    end
-    f
-end
-
-function plot_roi(connectome::Connectome, roi::Vector{String}; cortexcolor=(:grey,0.05), roi_alpha=1.0, transparency=true)
-
-    f  = set_fig()
-    plot_cortex!(:all; color=cortexcolor, transparency=transparency)
-    color = distinguishable_colors(length(roi))
-    for (i, j) in enumerate(roi)
-        ID = get_roi(connectome.parc, j)
-        for k in ID
-            plot_roi!(k, (color[i], roi_alpha))
-        end
-    end
-    f
-end
-
-function plot_roi(connectome::Connectome, roi::Vector{String}, hemisphere::Symbol; cortexcolor=(:grey,0.05), roi_alpha=1.0, transparency=true)
-
-    f = set_fig()
-    plot_cortex!(:all; color=cortexcolor, transparency=transparency)
-    color = distinguishable_colors(length(roi))
-    for (i, j) in enumerate(roi)
-        ID = get_roi(connectome.parc, j)
-        h_ID = get_hemisphere(connectome.parc[ID,:], hemisphere)
-        for k in h_ID
-            plot_roi!(k, (color[i], roi_alpha))
-        end
-    end
-    f
+function plot_roi!(roi::Vector{Int64}, colors::Vector{Float64}, cmap::ColorScheme; transparency=false)
+    [plot_roi!(roi, get(cmap, col); transparency=transparency) for (roi, col) in zip(roi, colors)]
 end
 
 function plot_vertex!(connectome::Connectome, node_size=10, color=(:blue, 0.5), transparency::Bool=true)
