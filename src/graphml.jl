@@ -61,9 +61,10 @@ function load_graphml(graph_path::String)
     xroot = root(xdoc)
     ces = collect(child_elements(xroot))
 
-    node_attributes = get_node_attributes(ces[end])
+    parc = Parcellation(get_node_attributes(ces[end])...)
+
     N, L = get_adjacency_matrix(ces[end])
-    return node_attributes, N, L
+    return parc, N, L
 end
 
 function load_parcellation(graph_path::String)
@@ -107,7 +108,7 @@ name_dict = Dict(1 => "dn_position_x",
                  9 => "number_of_fibers",
                  10 => "fiber_length",
 )
-df_dict = Dict(1 => :x,
+field_dict = Dict(1 => :x,
                2 => :y,
                3 => :z,
                4 => :ID,
@@ -135,14 +136,14 @@ function make_xml()
 end
 
 function add_nodes!(connectome::Connectome, c)
-    for j in 1:length(connectome.parc.ID)
+    for j in 1:length(connectome.parc)
         g = new_child(c, "node")
         set_attribute(g, "id", "$j")
 
         for i in 1:8
             d = new_child(g, "data")
             set_attribute(d, "key", "d$(i)")
-            add_text(d, "$(connectome.parc[j, df_dict[i]])")
+            add_text(d, "$(getfield(connectome.parc[j], field_dict[i]))")
         end
     end
 end

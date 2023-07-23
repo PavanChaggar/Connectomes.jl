@@ -21,6 +21,7 @@ import SimpleWeightedGraphs: adjacency_matrix, degree_matrix, laplacian_matrix
 
 include("parcellation.jl")
 export Parcellation, Region
+export get_id, get_label, get_region, get_lobe, get_hemisphere, get_coords
 
 include("graphs.jl")
 export Connectome

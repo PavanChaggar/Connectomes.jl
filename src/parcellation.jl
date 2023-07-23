@@ -1,7 +1,7 @@
 struct Region
     ID::Int
-    Name::String
-    roi::String
+    Label::String
+    Region::String
     Lobe::String
     Hemisphere::String
     x::Float64
@@ -18,6 +18,21 @@ function Parcellation(ids, labels, regions, lobes, hemispheres, xs, ys, zs)
      for i in eachindex(ids)])
 end
 
+function Parcellation(path::String)
+    Parcellation(load_parcellation(path)...)
+end
+
+get_id(roi::Region) = roi.ID
+get_label(roi::Region) = roi.Label
+get_region(roi::Region) = roi.Region
+get_lobe(roi::Region) = roi.Lobe
+get_hemisphere(roi::Region) = roi.Hemisphere
+get_coords(roi::Region) = [roi.x, roi.y, roi.z]
+
+function get_coords(parc::Parcellation)
+    transpose(reduce(hcat, get_coords.(parc)))
+end
+
 function Base.length(parc::Parcellation)
     length(parc.regions)
 end
@@ -27,7 +42,7 @@ function Base.show(io::IO, parc::Parcellation)
 end
 
 function Base.show(io::IO, roi::Region)
-    print(io, "Region $(roi.ID): $(roi.Hemisphere) $(roi.Name)")
+    print(io, "Region $(roi.ID): $(roi.Hemisphere) $(roi.Label)")
 end
 
 function Base.getindex(parc::Parcellation, idx::Int)
