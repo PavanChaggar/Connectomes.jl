@@ -64,9 +64,13 @@ function plot_roi!(roi::Int, color=(:grey,1.0); transparency=false)
 end
 
 function plot_roi!(rois::Vector{Int64}, colors::Vector{Float64}, cmap::ColorScheme; transparency=false)
-    for (roi, color) in zip(rois, colors)
-        plot_roi!(roi, get(cmap, color); transparency=transparency) 
-    end
+    [plot_roi!(roi, get(cmap, color); transparency=transparency) for (roi, color) in zip(rois, colors)]
+end
+
+function plot_roi(rois, colors, cmap; transparency=false, view=:front, resolution=(1600,900))
+    f  = set_fig(;resolution=resolution, view=view)
+    plot_roi!(rois, colors, cmap; transparency=transparency)
+    f
 end
 
 function plot_vertex!(connectome::Connectome, node_size=10, color=(:blue, 0.5), transparency::Bool=true)
