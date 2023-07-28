@@ -2,7 +2,6 @@ module Connectomes
 
 using Artifacts
 using LightXML
-using DataFrames
 using SparseArrays
 using SimpleWeightedGraphs
 using Graphs
@@ -15,9 +14,14 @@ using LinearAlgebra
 using Colors
 using ColorSchemes
 using Serialization
+using Tables
 import Graphs: degree
 import SimpleWeightedGraphs: adjacency_matrix, degree_matrix, laplacian_matrix
 
+
+include("parcellation.jl")
+export Parcellation, Region
+export get_id, get_label, get_region, get_lobe, get_hemisphere, get_coords
 
 include("graphs.jl")
 export Connectome

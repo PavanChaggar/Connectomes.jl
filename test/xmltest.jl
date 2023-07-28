@@ -5,7 +5,12 @@
 
     retest = Connectome(joinpath(@__DIR__, "test.xml"))
 
-    for fn in fieldnames(Connectome)
+    for (test_roi, retest_roi) in zip(test.parc, retest.parc)
+        @test test_roi == retest_roi
+    end
+    
+    for fn in (:graph, :n_matrix, :l_matrix)
+        println(fn)
         eval( quote display( @test $test.$fn == $retest.$fn) end)
     end
 

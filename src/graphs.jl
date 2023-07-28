@@ -60,7 +60,7 @@ Adjacency Matrix:
 ```
 """
 struct Connectome
-    parc::DataFrame
+    parc::Parcellation
     graph::SimpleWeightedGraph{Int64, Float64}
     n_matrix::Matrix{Float64}
     l_matrix::Matrix{Float64}
@@ -76,24 +76,23 @@ function Connectome(graph_path::String; norm=true, weight_function::Function = (
 
     #Graph = SimpleWeightedGraph(symmetrise(n_matrix ./ (l_matrix)^2))
     if norm
-        Graph = A |> max_norm |> SimpleWeightedGraph
+        Graph = SimpleWeightedGraph(A ./ maximum(A))
     else
         Graph = SimpleWeightedGraph(A)
     end
     return Connectome(parc, Graph, n_matrix, l_matrix, weight_function)
 end
 
-function Connectome(parc::DataFrame, c::Connectome)
+function Connectome(parc::Parcellation, c::Connectome)
     Connectome(parc, c.graph, c.n_matrix, c.l_matrix, c.weight_function)
 end
 
-function Connectome(A::AbstractMatrix, c::Connectome)
-    G = SimpleWeightedGraph(A)
-    Connectome(c.parc, G, c.n_matrix, c.l_matrix, c.weight_function)
-end
+# function Connectome(A::AbstractMatrix, c::Connectome)
+#     G = SimpleWeightedGraph(A)
+#     Connectome(c.parc, G, c.n_matrix, c.l_matrix, c.weight_function)
+# end
 
 function Base.show(io::IO, c::Connectome)
-    print(io, "Parcellation: \n")
     display(c.parc)
     print(io, "Adjacency Matrix: \n") 
     display(adjacency_matrix(c))
@@ -101,15 +100,13 @@ end
 
 # convenience functions for processing graphs
 function Base.filter(c::Connectome, cutoff::Float64=1e-2)
-    A = filter(adjacency_matrix(c), cutoff)
-    Connectome(A, c)
+    G = SimpleWeightedGraph(filter(adjacency_matrix(c), cutoff))
+    Connectome(c.parc, G, c.n_matrix, c.l_matrix, c.weight_function)
 end
 
-Base.filter(A::SparseMatrixCSC{Float64, Int64}, cutoff::Float64) = A .* (A .> cutoff)
+Base.filter(A::SparseMatrixCSC, cutoff::Float64) = A .* (A .> cutoff)
 
-max_norm(M) = M ./ maximum(M)
-
-degree(C::Connectome) = diag(C.D) |> Array 
+max_norm(A) = A ./ maximum(A)
 
 function symmetrise(A)
     (A + transpose(A)) / 2
@@ -125,9 +122,9 @@ function get_edge_weight(c::Connectome)
     lt_w.nzval
 end
 
-function slice(c::Connectome, rois::DataFrame; norm=true)
-    N = c.n_matrix[rois.ID, rois.ID]
-    L = c.l_matrix[rois.ID, rois.ID]
+function slice(c::Connectome, idx::Vector{Int}; norm=true)
+    N = c.n_matrix[idx, idx]
+    L = c.l_matrix[idx, idx]
     weighted_graph = c.weight_function(N, L)
     A = replace(weighted_graph, NaN => 0)
     if norm
@@ -135,8 +132,11 @@ function slice(c::Connectome, rois::DataFrame; norm=true)
     else
         G = SimpleWeightedGraph(A)
     end
-    Connectome(rois, G, N, L, c.weight_function)
+    parc = c.parc[idx]
+    Connectome(parc, G, N, L, c.weight_function)
 end
+
+slice(c::Connectome, parc::Parcellation; norm=true) = slice(c, get_id.(parc); norm=norm)
 
 function reweight(c::Connectome; norm=true, weight_function::Function)
     weighted_graph = weight_function(c.n_matrix, c.l_matrix)

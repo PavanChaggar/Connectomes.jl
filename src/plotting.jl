@@ -17,16 +17,12 @@ function get_hemisphere(parc, hemisphere::Symbol)
     parc[ids,:ID]
 end
 
-function get_roi(parc::DataFrame, roi::String)
-    findall(x -> occursin(roi, x), parc.Label)  
-end
-
-Region = Dict(zip([:left, :right, :all, :connectome], [lh_cortex(), rh_cortex(), fs_cortex(), mni_cortex()]))
+RegionDict = Dict(zip([:left, :right, :all, :connectome], [lh_cortex(), rh_cortex(), fs_cortex(), mni_cortex()]))
 
 View = Dict(zip([:right, :front, :left, :back], [0.0, 0.5, 1.0, 1.5]))
 
 function plot_cortex!(region::Symbol=:all; color=(:grey,0.05), transparency::Bool=true, kwargs...)
-    mesh!(load(Region[region]), color=color, transparency=transparency, kwargs...)
+    mesh!(load(RegionDict[region]), color=color, transparency=transparency, kwargs...)
 end
 
 function plot_cortex(region::Symbol=:all; resolution=(800, 600), view=:left, color=(:grey,1.0), transparency::Bool=false, kwargs...)

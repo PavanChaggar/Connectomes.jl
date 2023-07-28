@@ -18,22 +18,21 @@
     @test minimum(A1.nzval) > minimum(A2.nzval)
     @test length(A1.nzval) < length(A2.nzval)
 
-    @test connectome.parc isa DataFrame
-    @test connectome.parc.x isa Vector{Float64} 
-    @test connectome.parc.y isa Vector{Float64} 
-    @test connectome.parc.z isa Vector{Float64} 
-
-    @test length(connectome.parc.ID) == 83 
+    parc = connectome.parc
+    @test parc isa Parcellation
+    @test length(parc) == length(get_id.(parc)) == 83
+    @test size(get_coords(parc)) == (83, 3)
 
     cortex = filter(x -> x.Lobe != "subcortex", connectome.parc)
     cortex_c = slice(connectome, cortex)
 
     @test cortex_c isa Connectome 
-    @test size(cortex_c.n_matrix) == (length(cortex.ID), length(cortex.ID))
+    @test size(cortex_c.n_matrix) == (length(cortex), length(cortex))
     A3 = adjacency_matrix(cortex_c)
     @test maximum(A3) == 1.0
-    @test cortex_c.n_matrix == connectome.n_matrix[cortex.ID, cortex.ID]
-    @test cortex_c.l_matrix == connectome.l_matrix[cortex.ID, cortex.ID]
+    idx = get_id.(cortex)
+    @test cortex_c.n_matrix == connectome.n_matrix[idx, idx]
+    @test cortex_c.l_matrix == connectome.l_matrix[idx, idx]
 
     N = connectome.n_matrix
     L = connectome.l_matrix
