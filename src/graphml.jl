@@ -28,7 +28,6 @@ function get_node_attributes(graph)
         end
     end
     x, y, z = coords[:,1], coords[:,2], coords[:,3]
-    # return DataFrame(ID=nID, Label=labels, Region=region, Hemisphere=hemisphere, x=x, y=y, z=z, Lobe=lobe)
     return nID, labels, region, lobe, hemisphere, x, y, z
 
 end

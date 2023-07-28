@@ -65,3 +65,7 @@ Base.values(parc::Parcellation) = parc.regions
 function Base.filter(func, parc::Parcellation)
     Parcellation(Iterators.filter(func, parc) |> collect)
 end
+
+# # Tables interface
+Tables.istable(::Type{<:Parcellation}) = true
+Tables.rows(p::Parcellation) = p.regions
