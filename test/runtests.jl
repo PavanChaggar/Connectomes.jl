@@ -4,7 +4,6 @@ Pkg.instantiate()
 
 using Connectomes
 using SparseArrays
-using DataFrames
 using LinearAlgebra
 using FileIO
 using LightXML
