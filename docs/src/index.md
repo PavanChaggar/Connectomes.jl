@@ -13,6 +13,10 @@ Connectomes.jl comes with a connectome and parcellation. The file path can be fo
 with the function: 
 
 ```@example getting-started
+using JSServe # hide
+Page(exportable=true, offline=true) # hide
+using WGLMakie # hide
+
 using Connectomes
 
 connectome_path = Connectomes.connectome_path()
@@ -55,4 +59,15 @@ parc[1]
 or a `Vector{Int}`, which will return a new `Parcellation`.
 ```@example getting-started
 parc[[1, 2, 3]]
+```
+
+If we load a `Makie` backend, we can conveniently plot the parcellation. Let's say, we 
+just want to plot the left side of the connectome. We can do the following.
+
+```@example getting-started
+using WGLMakie
+
+left_parc = filter(x -> get_hemisphere(x) == "right", parc)
+
+plot_parc(left_parc)
 ```

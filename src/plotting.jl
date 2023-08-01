@@ -12,11 +12,6 @@ function set_fig(;resolution::Tuple{Int64, Int64}=(1600,900), view=:front)
     f
 end
 
-function get_hemisphere(parc, hemisphere::Symbol)
-    ids = findall(x -> x == string(hemisphere), parc.Hemisphere)
-    parc[ids,:ID]
-end
-
 RegionDict = Dict(zip([:left, :right, :all, :connectome], [lh_cortex(), rh_cortex(), fs_cortex(), mni_cortex()]))
 
 View = Dict(zip([:right, :front, :left, :back], [0.0, 0.5, 1.0, 1.5]))
@@ -31,26 +26,16 @@ function plot_cortex(region::Symbol=:all; resolution=(800, 600), view=:left, col
     f
 end
 
-function plot_parc!(connectome::Connectome, hemisphere::Symbol; alpha=1.0)
-    h_ids = get_hemisphere(connectome.parc, hemisphere)
-
-    colors = distinguishable_colors(length(h_ids))
-    for (i, j) in enumerate(h_ids)
-        roi = load(meshpath * "meshes/DKT/roi_$(j).obj")
-        mesh!(roi, color=(colors[i], alpha), transparency=false)
+function plot_parc!(parc::Parcellation)
+    colors = distinguishable_colors(length(parc))
+    for (i, roi) in enumerate(parc)
+        plot_roi!(get_id(roi), colors[i])
     end
 end
 
-function plot_parc(connectome::Connectome, hemisphere::Symbol; alpha=1.0, view=:left)
-    f = set_fig(view=view)
-    plot_parc!(connectome, hemisphere; alpha)
-    f
-end
-
-function plot_parc(connectome::Connectome; alpha=1.0)
-    f  = set_fig()
-    plot_parc!(connectome, :left; alpha)
-    plot_parc!(connectome, :right; alpha)
+function plot_parc(parc::Parcellation; view=:left)
+    f = set_fig(;view=view)
+    plot_parc!(parc)
     f
 end
 
