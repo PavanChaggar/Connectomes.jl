@@ -136,7 +136,7 @@ function slice(c::Connectome, idx::Vector{Int}; norm=true)
     Connectome(parc, G, N, L, c.weight_function)
 end
 
-slice(c::Connectome, parc::Parcellation; norm=true) = slice(c, get_id.(parc); norm=norm)
+slice(c::Connectome, parc::Parcellation; norm=true) = slice(c, get_node_id.(parc); norm=norm)
 
 function reweight(c::Connectome; norm=true, weight_function::Function)
     weighted_graph = weight_function(c.n_matrix, c.l_matrix)
