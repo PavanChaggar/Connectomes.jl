@@ -22,7 +22,7 @@ function Parcellation(path::String)
     Parcellation(load_parcellation(path)...)
 end
 
-get_id(roi::Region) = roi.ID
+get_node_id(roi::Region) = roi.ID
 get_label(roi::Region) = roi.Label
 get_region(roi::Region) = roi.Region
 get_lobe(roi::Region) = roi.Lobe
