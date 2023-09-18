@@ -39,13 +39,13 @@ function plot_parc(parc::Parcellation; view=:left)
     f
 end
 
-function plot_roi!(roi::Int, color=(:grey,1.0); transparency=false)
+function plot_roi!(roi::Int, color=(:grey,1.0); transparency=false, colorrange=(0., 1.))
     roi = joinpath(meshpath, "meshes/DKT/roi_$(roi).obj")
-    mesh!(load(roi), color=color, transparency=transparency)
+    mesh!(load(roi), color=color, transparency=transparency, colorrange=colorrange)
 end
 
-function plot_roi!(rois::Vector{Int64}, colors::Vector{Float64}, cmap::ColorScheme; transparency=false)
-    [plot_roi!(roi, get(cmap, color); transparency=transparency) for (roi, color) in zip(rois, colors)]
+function plot_roi!(rois::Vector{Int64}, colors::Vector{Float64}, cmap::ColorScheme; transparency=false, colorrange=(0.,1.))
+    [plot_roi!(roi, get(cmap, color); transparency=transparency, colorrange=colorrange) for (roi, color) in zip(rois, colors)]
 end
 
 function plot_roi(rois, colors, cmap; transparency=false, view=:front, resolution=(1600,900))
