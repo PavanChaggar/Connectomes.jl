@@ -5,14 +5,14 @@ using LightXML
 using SparseArrays
 using SimpleWeightedGraphs
 using Graphs
-using Makie
-using GraphMakie
+# using Makie
+# using GraphMakie
 using CSV
 using DelimitedFiles
 using FileIO
 using LinearAlgebra
-using Colors
-using ColorSchemes
+# using Colors
+# using ColorSchemes
 using Serialization
 using Tables
 import Graphs: degree
