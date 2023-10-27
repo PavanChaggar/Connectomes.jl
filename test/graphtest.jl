@@ -20,7 +20,7 @@
 
     parc = connectome.parc
     @test parc isa Parcellation
-    @test length(parc) == length(get_id.(parc)) == 83
+    @test length(parc) == length(get_node_id.(parc)) == 83
     @test size(get_coords(parc)) == (83, 3)
 
     cortex = filter(x -> x.Lobe != "subcortex", connectome.parc)
@@ -30,7 +30,7 @@
     @test size(cortex_c.n_matrix) == (length(cortex), length(cortex))
     A3 = adjacency_matrix(cortex_c)
     @test maximum(A3) == 1.0
-    idx = get_id.(cortex)
+    idx = get_node_id.(cortex)
     @test cortex_c.n_matrix == connectome.n_matrix[idx, idx]
     @test cortex_c.l_matrix == connectome.l_matrix[idx, idx]
 
