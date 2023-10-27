@@ -87,6 +87,11 @@ function Connectome(parc::Parcellation, c::Connectome)
     Connectome(parc, c.graph, c.n_matrix, c.l_matrix, c.weight_function)
 end
 
+function Connectome(A::AbstractMatrix, parc::Parcellation)
+    G = SimpleWeightedGraph(A)
+    Connectome(parc, G, A, A, (n, l) -> n)
+end
+
 # function Connectome(A::AbstractMatrix, c::Connectome)
 #     G = SimpleWeightedGraph(A)
 #     Connectome(c.parc, G, c.n_matrix, c.l_matrix, c.weight_function)

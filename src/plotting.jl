@@ -101,7 +101,8 @@ function plot_connectome!(connectome::Connectome;
                               node_size = 10.0)
 
         g = connectome.graph
-        positions = Point.(zip(connectome.parc.x, connectome.parc.y, connectome.parc.z))
+        coords = get_coords(connectome.parc)
+        positions = Point.(zip(coords[:,1], coords[:,2], coords[:,3]))
 
         if edge_weighted
             ew = get_edge_weight(connectome)
@@ -114,7 +115,7 @@ function plot_connectome!(connectome::Connectome;
                                 min_edge_size, max_edge_size)
         else
             edge_color = [colorant"grey" for i in 1:ne(g)]
-            edge_width = fill(edge_size, ne(g))
+            edge_width = fill(max_edge_size, ne(g))
         end
 
         if node_weighted
