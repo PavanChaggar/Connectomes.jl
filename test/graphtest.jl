@@ -50,8 +50,9 @@
 end
 
 @testset "Makie" begin
-    using GLMakie
+    @test isnothing(Base.get_extension(Connectomes, :ConnectomesMakieExt))
+    
+    using Makie
 
-    f = plot_cortex()
-    @test f isa Figure
+    @test !isnothing(Base.get_extension(Connectomes, :ConnectomesMakieExt))
 end
