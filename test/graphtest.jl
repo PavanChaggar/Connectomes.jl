@@ -48,3 +48,10 @@
 
     @test diffusive_weights == weighted_connectome_A == reweighted_connectome_A
 end
+
+@testset "Makie" begin
+    using GLMakie
+
+    f = plot_cortex()
+    @test f isa Figure
+end

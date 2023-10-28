@@ -52,5 +52,6 @@ export plot_vertices
 export plot_vertex!
 export plot_connectome
 export plot_connectome!
+export set_fig
 
 end
