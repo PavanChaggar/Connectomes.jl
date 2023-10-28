@@ -38,7 +38,7 @@ end
 function Connectomes.plot_parc!(parc::Parcellation)
     colors = distinguishable_colors(length(parc))
     for (i, roi) in enumerate(parc)
-        plot_roi!(get_id(roi), colors[i])
+        plot_roi!(get_node_id(roi), colors[i])
     end
 end
 
