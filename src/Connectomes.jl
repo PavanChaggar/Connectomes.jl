@@ -48,6 +48,7 @@ export plot_mesh
 export plot_roi
 export plot_roi!
 export plot_parc
+export plot_parc!
 export plot_vertices
 export plot_vertex!
 export plot_connectome

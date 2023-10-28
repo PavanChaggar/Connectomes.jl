@@ -35,7 +35,7 @@ end
 
 function Connectomes.plot_parc(parc::Parcellation; view=:left)
     f = set_fig(;view=view)
-    Connectomes.plot_parc!(parc)
+    plot_parc!(parc)
     f
 end
 
