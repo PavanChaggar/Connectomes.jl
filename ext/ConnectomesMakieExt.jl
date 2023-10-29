@@ -33,8 +33,8 @@ function Connectomes.plot_parc!(parc::Parcellation)
     end
 end
 
-function Connectomes.plot_parc(parc::Parcellation; view=:left)
-    f = set_fig(;view=view)
+function Connectomes.plot_parc(parc::Parcellation; resolution=(800, 600), view=:left)
+    f = set_fig(; resolution=resolution, view=view)
     plot_parc!(parc)
     f
 end
