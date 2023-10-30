@@ -3,7 +3,7 @@ using Documenter, Connectomes
 makedocs(
 	sitename="Connectomes.jl",
 	modules = [Connectomes],
-	format=Documenter.HTML(prettyurls=false, size_threshold=1000000),
+	format=Documenter.HTML(prettyurls=false, size_threshold=50000000),
 	pages = [
 	"Home" => "index.md",
 	"Connectomes" => "connectomes.md"]
