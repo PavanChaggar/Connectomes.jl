@@ -5,14 +5,14 @@ using LightXML
 using SparseArrays
 using SimpleWeightedGraphs
 using Graphs
-using Makie
-using GraphMakie
+# using Makie
+# using GraphMakie
 using CSV
 using DelimitedFiles
 using FileIO
 using LinearAlgebra
-using Colors
-using ColorSchemes
+# using Colors
+# using ColorSchemes
 using Serialization
 using Tables
 import Graphs: degree
@@ -48,9 +48,11 @@ export plot_mesh
 export plot_roi
 export plot_roi!
 export plot_parc
+export plot_parc!
 export plot_vertices
 export plot_vertex!
 export plot_connectome
 export plot_connectome!
+export set_fig
 
 end

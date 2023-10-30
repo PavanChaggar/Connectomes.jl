@@ -17,7 +17,8 @@ Page(exportable=true, offline=true) # hide
 
 ```@example plot
 using WGLMakie
+Makie.inline!(true) # hide
 using Connectomes
 
-plot_cortex()
+plot_cortex(resolution=(500, 400))
 ```

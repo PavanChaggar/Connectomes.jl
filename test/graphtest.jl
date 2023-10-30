@@ -48,3 +48,11 @@
 
     @test diffusive_weights == weighted_connectome_A == reweighted_connectome_A
 end
+
+@testset "Makie" begin
+    @test isnothing(Base.get_extension(Connectomes, :ConnectomesMakieExt))
+    
+    using Makie
+
+    @test !isnothing(Base.get_extension(Connectomes, :ConnectomesMakieExt))
+end
