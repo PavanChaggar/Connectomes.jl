@@ -68,7 +68,7 @@ just want to plot the left side of the connectome. We can do the following.
 using WGLMakie
 Makie.inline!(true) # hide
 
-left_parc = filter(x -> get_lobe(x) == "subcortex", parc)
+left_parc = filter(x -> get_hemisphere(x) == "left", parc)
 
-plot_parc(left_parc; resolution=(500, 350), view=:front)
+plot_parc(left_parc; resolution=(500, 350), view=:left)
 ```
