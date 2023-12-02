@@ -1,23 +1,8 @@
-# Connectomes.jl
+# Parcellations
 
-This is the documentation for Connectomes.jl, a package made for working with human brain connectomes, simulating dynamical systems on networks and visualising brain related images.
+One of the main components of a Connectome is the Parcellation, which comprises a list of regions over which fibre tracts are summarised. 
 
-## Working with Connectomes 
-
-A Connectome is a spatially embedded graph ``G = (V, E)``. The collection of vertices, ``V``,
-are labelled nodes corresponding to discrete brain regions given by a particular brain 
-parcellation, and the edge set, ``E``, denotes edges between these vertices, as inferred
-from tractography.
-
-In this package we implement two types: 
-* [Parcellation](@ref)
-* [Connectome](@ref)
-
-See their doc pages for more on how to work with and plot each type.
-<!-- 
-Connectomes.jl comes with a connectome and parcellation. The file path can be found 
-with the function: 
-
+By default we use the Desikan-Killiany-Tourville (DKT) atlas, provided as standard by FreeSurfer. The parcellation is included within the main connectome file that ships with Connectomes.jl. We can load it like so:
 ```@example getting-started
 using JSServe # hide
 Page(exportable=true, offline=true) # hide
@@ -28,10 +13,12 @@ using Connectomes
 connectome_path = Connectomes.connectome_path()
 ```
 
-From this path, two datatypes can be loaded: a `Parcellation` or a `Connectome`. A 
-parcellation underlies a connectome, so let's start with that. By default, we use 
-the Desikan-Killiany-Tourville (DKT) atlas. A parcellation is simply a
-collection of `Regions`.
+The parcellation can be loaded from the `connectome_path` in the following way.
+
+```@example getting-started
+parc = Parcellation(connectome_path)
+```
+A parcellation is simply a collection of `Regions`.
 
 ```
 struct Parcellation
@@ -50,11 +37,6 @@ struct Region
     y::Float64              # y coordinate
     z::Float64              # z coordinate
 end
-```
-The parcellation can be loaded from the `connectome_path` in the following way.
-
-```@example getting-started
-parc = Parcellation(connectome_path)
 ```
 
 `parc` can be numerically indexed to retrieve regions, either as a `Int`
@@ -78,4 +60,4 @@ left_parc = filter(x -> get_hemisphere(x) == "left", parc)
 
 plot_parc(left_parc; resolution=(500, 350), view=:left)
 ```
- -->
+
