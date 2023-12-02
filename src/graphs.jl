@@ -11,15 +11,18 @@ Main type introduced by Connectomes.jl,
 
 ```julia
 struct Connectome
-    parc::DataFrame
-    graph::SimpleWeightedGraph{Int64, Float64}
-    n_matrix::Matrix{Float64}
-    l_matrix::Matrix{Float64}
+        parc::Parcellation
+        graph::SimpleWeightedGraph{Int64, Float64}
+        n_matrix::Matrix{Float64}
+        l_matrix::Matrix{Float64}
+        weight_function::Function
 end
 ```
-where `parc` is the parcellation atlas, graph is a 
+where `parc` is a `Parcellation`, `graph` is a 
 `SimpleWeightedGraph` encoding a weighted Connectome, `n_matrix` is 
-the length matrix and `l_matrix` is the length matrix.
+the length matrix and `l_matrix` is the length matrix and 
+`weight_function` defines the weighting of (n, l) that is used 
+to construct the graph. 
 
 # Example
 

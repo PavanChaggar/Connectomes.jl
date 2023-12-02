@@ -3,6 +3,10 @@
 
 One of the main components of a Connectome is the Parcellation, which comprises a list of regions over which fibre tracts are summarised. 
 
+```@docs
+Parcellation
+```
+
 By default we use the Desikan-Killiany-Tourville (DKT) atlas, provided as standard by FreeSurfer. The parcellation is included within the main connectome file that ships with Connectomes.jl. We can load it like so:
 ```@example getting-started
 using JSServe # hide
@@ -60,4 +64,18 @@ Makie.inline!(true) # hide
 left_parc = filter(x -> get_hemisphere(x) == "left", parc)
 
 plot_parc(left_parc; resolution=(500, 350), view=:left)
+```
+
+# API
+
+```@docs
+Region
+get_node_id
+get_label
+get_cortex 
+get_lobe
+get_hemisphere
+get_coords
+Base.getindex
+Base.length
 ```
