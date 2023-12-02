@@ -6,7 +6,7 @@ makedocs(
 	format=Documenter.HTML(prettyurls=false, size_threshold=50000000),
 	pages = [
 	"Home" => "index.md",
-	"Parcellation" => "parcellation.md"
+	"Parcellation" => "parcellation.md",
 	"Connectomes" => "connectomes.md"]
 )
 

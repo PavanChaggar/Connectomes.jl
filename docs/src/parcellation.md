@@ -60,4 +60,3 @@ left_parc = filter(x -> get_hemisphere(x) == "left", parc)
 
 plot_parc(left_parc; resolution=(500, 350), view=:left)
 ```
-
