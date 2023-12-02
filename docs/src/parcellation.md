@@ -1,4 +1,5 @@
-# Parcellations
+# [Parcellation](@id parcellation)
+
 
 One of the main components of a Connectome is the Parcellation, which comprises a list of regions over which fibre tracts are summarised. 
 

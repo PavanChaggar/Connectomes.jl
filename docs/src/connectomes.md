@@ -1,4 +1,5 @@
-# Guide to Connectomes
+# [Connectome](@id connectome)
+
 
 ```@docs
 Connectome

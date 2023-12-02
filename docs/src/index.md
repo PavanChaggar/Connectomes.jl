@@ -10,8 +10,8 @@ parcellation, and the edge set, ``E``, denotes edges between these vertices, as 
 from tractography.
 
 In this package we implement two types: 
-* [Parcellation](@ref)
-* [Connectome](@ref)
+* [Parcellation](@ref parcellation)
+* [Connectome](@ref connectome)
 
 See their doc pages for more on how to work with and plot each type.
 <!-- 
