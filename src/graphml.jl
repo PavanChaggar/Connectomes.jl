@@ -111,7 +111,7 @@ field_dict = Dict(1 => :x,
                2 => :y,
                3 => :z,
                4 => :ID,
-               5 => :Region,
+               5 => :Cortex,
                6 => :Label,
                7 => :Lobe,
                8 => :Hemisphere)
