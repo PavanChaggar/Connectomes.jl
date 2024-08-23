@@ -8,8 +8,8 @@ using ColorSchemes
 using Colors
 using MeshIO, FileIO
 
-function Connectomes.set_fig(;resolution::Tuple{Int64, Int64}=(1600,900), view=:front)
-    f = Figure(resolution = resolution)
+function Connectomes.set_fig(;size::Tuple{Int64, Int64}=(1600,900), view=:front)
+    f = Figure(size = size)
     ax = Axis3(f[1,1], aspect = :data, azimuth = View[view]pi, elevation=0.0pi)
     hidedecorations!(ax)
     hidespines!(ax)
@@ -20,8 +20,8 @@ function Connectomes.plot_cortex!(region::Symbol=:all; color=(:grey,0.05), trans
     mesh!(load(RegionDict[region]), color=color, transparency=transparency, kwargs...)
 end
 
-function Connectomes.plot_cortex(region::Symbol=:all; resolution=(800, 600), view=:left, color=(:grey,1.0), transparency::Bool=false, kwargs...)
-    f = set_fig(resolution=resolution, view=view)
+function Connectomes.plot_cortex(region::Symbol=:all; size=(800, 600), view=:left, color=(:grey,1.0), transparency::Bool=false, kwargs...)
+    f = set_fig(size=size, view=view)
     plot_cortex!(region; color, transparency, kwargs...)
     f
 end
@@ -33,8 +33,8 @@ function Connectomes.plot_parc!(parc::Parcellation)
     end
 end
 
-function Connectomes.plot_parc(parc::Parcellation; resolution=(800, 600), view=:left)
-    f = set_fig(; resolution=resolution, view=view)
+function Connectomes.plot_parc(parc::Parcellation; size=(800, 600), view=:left)
+    f = set_fig(; size=size, view=view)
     plot_parc!(parc)
     f
 end
@@ -48,8 +48,8 @@ function Connectomes.plot_roi!(rois::Vector{Int64}, colors::Vector{Float64}, cma
     [plot_roi!(roi, get(cmap, color); transparency=transparency) for (roi, color) in zip(rois, colors)]
 end
 
-function Connectomes.plot_roi(rois, colors, cmap; transparency=false, view=:front, resolution=(1600,900))
-    f  = set_fig(;resolution=resolution, view=view)
+function Connectomes.plot_roi(rois, colors, cmap; transparency=false, view=:front, size=(1600,900))
+    f  = set_fig(;size=size, view=view)
     plot_roi!(rois, colors, cmap; transparency=transparency)
     f
 end
