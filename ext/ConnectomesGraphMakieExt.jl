@@ -64,7 +64,7 @@ function Connectomes.plot_connectome!(connectome::Connectome;
         node_width = fill(node_size, nv(g))
     end
 
-    @assert lenght(node_color) == length(connectome.parc)
+    @assert length(node_color) == length(connectome.parc)
 
     graphplot!(g,
                 edge_width = edge_width,
