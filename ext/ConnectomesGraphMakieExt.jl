@@ -37,7 +37,7 @@ function Connectomes.plot_connectome!(connectome::Connectome;
                                         min_edge_size = 0.0,
                                         max_edge_size = 10.0,
                                         node_weighted = true,
-                                        node_color = (:blue, 0.5),
+                                        node_color = fill((:blue, 0.5), 83),
                                         node_size = 10.0)
 
     g = connectome.graph
@@ -64,11 +64,13 @@ function Connectomes.plot_connectome!(connectome::Connectome;
         node_width = fill(node_size, nv(g))
     end
 
+    @assert lenght(node_color) == length(connectome.parc)
+
     graphplot!(g,
                 edge_width = edge_width,
                 edge_color = edge_color,
                 node_size = node_width,
-                node_color = fill(node_color, nv(g));
+                node_color = node_color;
                 layout = _ -> positions)
 end
 
