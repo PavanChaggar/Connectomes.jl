@@ -32,9 +32,9 @@ function get_node_attributes(graph)
 
 end
 
-function get_adjacency_matrix(graph)
-    L = zeros(83,83)
-    N = zeros(83,83)
+function get_adjacency_matrix(graph, N)
+    L = zeros(N,N)
+    N = zeros(N,N)
 
     local n
     local l
@@ -62,7 +62,7 @@ function load_graphml(graph_path::String)
 
     parc = Parcellation(get_node_attributes(ces[end])...)
 
-    N, L = get_adjacency_matrix(ces[end])
+    N, L = get_adjacency_matrix(ces[end], length(parc))
     return parc, N, L
 end
 
