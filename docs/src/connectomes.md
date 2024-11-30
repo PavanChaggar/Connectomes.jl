@@ -21,5 +21,5 @@ using WGLMakie
 Makie.inline!(true) # hide
 using Connectomes
 
-plot_cortex(resolution=(500, 400))
+plot_cortex(size=(500, 400))
 ```
