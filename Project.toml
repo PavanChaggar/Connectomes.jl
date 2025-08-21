@@ -31,11 +31,11 @@ ConnectomesGraphMakieExt = ["Makie", "GraphMakie"]
 julia = "1.9"
 CSV = "0.10"
 ColorSchemes = "3"
-Colors = "0.12"
+Colors = "0.13"
 FileIO = "1.9"
 Graphs = "1"
 LightXML = "0.9"
-MeshIO = "0.4"
+MeshIO = "0.5"
 SimpleWeightedGraphs = "1.1"
 Tables = "1"
 
