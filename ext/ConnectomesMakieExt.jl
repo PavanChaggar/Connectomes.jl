@@ -40,7 +40,7 @@ function Connectomes.plot_parc(parc::Parcellation; size=(800, 600), view=:left)
 end
 
 function Connectomes.plot_roi!(roi::Int, color=(:grey,1.0); transparency=false)
-    roi = joinpath(meshpath, "meshes/DKT/roi_$(roi).obj")
+    roi = joinpath(meshpath[], "meshes/DKT/roi_$(roi).obj")
     mesh!(load(roi), color=color, transparency=transparency)
 end
 

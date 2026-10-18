@@ -54,5 +54,7 @@ export plot_vertex!
 export plot_connectome
 export plot_connectome!
 export set_fig
+export set_meshpath!
+export reset_meshpath!
 
 end
